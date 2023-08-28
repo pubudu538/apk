@@ -155,10 +155,15 @@ func (r *API) validateAPIContextExistsAndDefaultVersion() *field.Error {
 
 	}
 	currentAPIContextWithoutVersion := getContextWithoutVersion(r.Spec.Context)
+	incomingAPIEnvironment := getEnvironment(r.Spec.Environment)
+
 	for _, api := range apiList {
 		if (types.NamespacedName{Namespace: r.Namespace, Name: r.Name} !=
 			types.NamespacedName{Namespace: api.Namespace, Name: api.Name}) {
-			if api.Spec.Organization == r.Spec.Organization && api.Spec.Context == r.Spec.Context {
+
+			existingAPIEnvironment := getEnvironment(api.Spec.Environment)
+			if api.Spec.Organization == r.Spec.Organization && api.Spec.Context == r.Spec.Context &&
+				incomingAPIEnvironment == existingAPIEnvironment {
 				return &field.Error{
 					Type:     field.ErrorTypeDuplicate,
 					Field:    field.NewPath("spec").Child("context").String(),
@@ -189,6 +194,13 @@ func (r *API) validateAPIContextExistsAndDefaultVersion() *field.Error {
 		}
 	}
 	return nil
+}
+
+func getEnvironment(environment string) string {
+	if environment != "" {
+		return environment
+	}
+	return config.ReadConfigs().CommonController.Environment
 }
 
 func retrieveAPIList() ([]API, error) {
