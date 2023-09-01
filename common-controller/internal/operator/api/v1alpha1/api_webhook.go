@@ -26,6 +26,7 @@ import (
 	"github.com/wso2/apk/adapter/pkg/logging"
 	"github.com/wso2/apk/common-controller/internal/config"
 	"github.com/wso2/apk/common-controller/internal/loggers"
+	"github.com/wso2/apk/common-controller/internal/operator/utils"
 	"golang.org/x/exp/slices"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -155,13 +156,13 @@ func (r *API) validateAPIContextExistsAndDefaultVersion() *field.Error {
 
 	}
 	currentAPIContextWithoutVersion := getContextWithoutVersion(r.Spec.Context)
-	incomingAPIEnvironment := getEnvironment(r.Spec.Environment)
+	incomingAPIEnvironment := utils.GetEnvironment(r.Spec.Environment)
 
 	for _, api := range apiList {
 		if (types.NamespacedName{Namespace: r.Namespace, Name: r.Name} !=
 			types.NamespacedName{Namespace: api.Namespace, Name: api.Name}) {
 
-			existingAPIEnvironment := getEnvironment(api.Spec.Environment)
+			existingAPIEnvironment := utils.GetEnvironment(api.Spec.Environment)
 			if api.Spec.Organization == r.Spec.Organization && api.Spec.Context == r.Spec.Context &&
 				incomingAPIEnvironment == existingAPIEnvironment {
 				return &field.Error{
@@ -194,13 +195,6 @@ func (r *API) validateAPIContextExistsAndDefaultVersion() *field.Error {
 		}
 	}
 	return nil
-}
-
-func getEnvironment(environment string) string {
-	if environment != "" {
-		return environment
-	}
-	return config.ReadConfigs().CommonController.Environment
 }
 
 func retrieveAPIList() ([]API, error) {
