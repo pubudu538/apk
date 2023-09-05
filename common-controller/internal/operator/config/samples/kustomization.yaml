@@ -1,4 +1,5 @@
 ## Append samples of your project ##
 resources:
 - dp_v1alpha1_ratelimitpolicy.yaml
+- cp_v1alpha1_organization.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

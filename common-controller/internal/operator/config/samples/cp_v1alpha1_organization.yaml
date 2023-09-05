@@ -1,0 +1,12 @@
+apiVersion: cp.wso2.com/v1alpha1
+kind: Organization
+metadata:
+  labels:
+    app.kubernetes.io/name: organization
+    app.kubernetes.io/instance: organization-sample
+    app.kubernetes.io/part-of: operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: operator
+  name: organization-sample
+spec:
+  # TODO(user): Add fields here
