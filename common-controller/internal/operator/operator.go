@@ -36,7 +36,7 @@ import (
 
 	cpv1alpha1 "github.com/wso2/apk/common-controller/internal/operator/api/cp/v1alpha1"
 	dpv1alpha1 "github.com/wso2/apk/common-controller/internal/operator/api/v1alpha1"
-	controllers "github.com/wso2/apk/common-controller/internal/operator/controller"
+	controllers "github.com/wso2/apk/common-controller/internal/operator/controllers"
 	//+kubebuilder:scaffold:imports
 )
 

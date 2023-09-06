@@ -15,7 +15,7 @@
  *
  */
 
-package controller
+package controllers
 
 import (
 	"context"
