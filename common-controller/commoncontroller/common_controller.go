@@ -32,6 +32,8 @@ import (
 	envoy_cachev3 "github.com/envoyproxy/go-control-plane/pkg/cache/v3"
 	xdsv3 "github.com/envoyproxy/go-control-plane/pkg/server/v3"
 	logger "github.com/sirupsen/logrus"
+	apkmgtService "github.com/wso2/apk/adapter/pkg/discovery/api/wso2/discovery/service/apkmgt"
+	wso2_server "github.com/wso2/apk/adapter/pkg/discovery/protocol/server/v3"
 	"github.com/wso2/apk/adapter/pkg/health"
 	healthservice "github.com/wso2/apk/adapter/pkg/health/api/wso2/health/service"
 	"github.com/wso2/apk/adapter/pkg/logging"
@@ -46,8 +48,9 @@ import (
 )
 
 var (
-	rlsPort uint
-	cache   envoy_cachev3.SnapshotCache
+	rlsPort      uint
+	enforcerPort uint
+	cache        envoy_cachev3.SnapshotCache
 )
 
 const (
@@ -72,9 +75,10 @@ var _ envoy_cachev3.NodeHash = IDHash{}
 func init() {
 	cache = envoy_cachev3.NewSnapshotCache(false, IDHash{}, nil)
 	flag.UintVar(&rlsPort, "rls-port", 18005, "Rate Limiter management server port")
+	flag.UintVar(&enforcerPort, "enf-port", 18006, "Enforcer management server port")
 }
 
-func runRatelimitServer(rlsServer xdsv3.Server) {
+func runXdsServers(rlsServer xdsv3.Server, enforcerServer wso2_server.Server) {
 	var grpcOptions []grpc.ServerOption
 	grpcOptions = append(grpcOptions, grpc.MaxConcurrentStreams(grpcMaxConcurrentStreams))
 	publicKeyLocation, privateKeyLocation, truststoreLocation := utils.GetKeyLocations()
@@ -122,6 +126,26 @@ func runRatelimitServer(rlsServer xdsv3.Server) {
 				"Error serving Rate Limiter xDS gRPC server on port %v, error: %v", rlsPort, err.Error()))
 		}
 	}()
+
+	// Run the xDS server for Enforcer
+
+	enforcerGrpcServer := grpc.NewServer(grpcOptions...)
+	loggers.LoggerAPKOperator.Info("port: ", enforcerPort, " enforcer management server listening")
+	enfLis, err := net.Listen("tcp", fmt.Sprintf(":%d", enforcerPort))
+	if err != nil {
+		loggers.LoggerAPKOperator.ErrorC(logging.PrintError(logging.Error1100, logging.BLOCKER, "Failed to listen on port: %v, error: %v", enforcerPort, err.Error()))
+	}
+
+	apkmgtService.RegisterAPKMgtOrgDiscoveryServiceServer(enforcerGrpcServer, enforcerServer)
+	healthservice.RegisterHealthServer(enforcerGrpcServer, &health.Server{})
+	go func() {
+		loggers.LoggerAPKOperator.Info("Starting Enforcer Management xDS gRPC server.")
+		if err = rlsGrpcServer.Serve(enfLis); err != nil {
+			loggers.LoggerAPKOperator.ErrorC(logging.PrintError(logging.Error1105, logging.BLOCKER,
+				"Error serving Enforcer Management xDS gRPC server on port %v, error: %v", enforcerPort, err.Error()))
+		}
+	}()
+
 }
 
 // InitCommonControllerServer initializes the gRPC server for the common controller.
@@ -136,7 +160,11 @@ func InitCommonControllerServer(conf *config.Config) {
 	rateLimiterCache := xds.GetRateLimiterCache()
 	rlsSrv := xdsv3.NewServer(ctx, rateLimiterCache, &xds.Callbacks{})
 
-	runRatelimitServer(rlsSrv)
+	// change this to enforcer xds callbacks
+	enforcerOrganizationCache := xds.GetEnforcerOrganizationCache()
+	enforcerXdsSrv := wso2_server.NewServer(ctx, enforcerOrganizationCache, &xds.Callbacks{})
+	runXdsServers(rlsSrv, enforcerXdsSrv)
+
 	// Set empty snapshot to initiate ratelimit service
 	xds.SetEmptySnapshotupdate(conf.CommonController.Server.Label)
 	go operator.InitOperator()

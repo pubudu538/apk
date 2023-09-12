@@ -62,6 +62,8 @@ func GetResponseType(typeURL string) types.ResponseType {
 		return types.Subscription
 	case resource.JWTIssuerType:
 		return types.JWTIssuer
+	case resource.OrganizationListType:
+		return types.OrganizationList
 	}
 	return types.UnknownType
 }
@@ -102,6 +104,8 @@ func GetResourceName(res envoy_types.Resource) string {
 		return fmt.Sprint(v.Uuid)
 	case *subscription.JWTIssuer:
 		return fmt.Sprint(v.Name)
+	case *apkmgt.OrganizationList:
+		return "OrganizationList"
 	default:
 		return ""
 	}

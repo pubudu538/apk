@@ -63,4 +63,29 @@ public class GRPCUtils {
         }
         return true;
     }
+
+    public static ManagedChannel createSecuredChannelForCommonController(Logger logger, String host, int port) {
+        File certFile = Paths.get(ConfigHolder.getInstance().getEnvVarConfig().getEnforcerPublicKeyPath()).toFile();
+        File keyFile = Paths.get(ConfigHolder.getInstance().getEnvVarConfig().getEnforcerPrivateKeyPath()).toFile();
+        SslContext sslContext = null;
+        try {
+            sslContext = GrpcSslContexts
+                    .forClient()
+                    .trustManager(ConfigHolder.getInstance().getTrustManagerFactory())
+                    .keyManager(certFile, keyFile)
+                    .build();
+        } catch (SSLException e) {
+            logger.error("Error while generating SSL Context.", e);
+        }
+
+        logger.info("--- Remove  --APK---- ");
+        logger.info(host);
+        logger.info(port);
+
+        return NettyChannelBuilder.forAddress(host, port)
+                .useTransportSecurity()
+                .sslContext(sslContext)
+                .overrideAuthority(ConfigHolder.getInstance().getEnvVarConfig().getCommonControllerHostname())
+                .build();
+    }
 }

@@ -44,6 +44,8 @@ public class Constants {
             "type.googleapis.com/wso2.discovery.keymgt.RevokedToken";
     public static final String THROTTLE_DATA_TYPE_URL =
             "type.googleapis.com/wso2.discovery.throttle.ThrottleData";
+    public static final String ORGANIZATION_DATA_TYPE_URL =
+            "type.googleapis.com/wso2.discovery.apkmgt.OrganizationList";
 
     // xDS constants
     public static final int MAX_XDS_RETRIES = 3;

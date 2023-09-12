@@ -19,4 +19,33 @@ data:
 
     [commoncontroller.truststore]
       location = "/home/wso2/security/truststore"
+
+  log_config.toml: |
+    # The logging configuration for Adapter
+
+    ## Adapter root Level configurations
+
+    {{- if .Values.wso2.apk.dp.adapter.logging }}
+    logLevel = "DEBG" # LogLevels can be "DEBG", "FATL", "ERRO", "WARN", "INFO", "PANC"
+    LogFormat = "{{ .Values.wso2.apk.dp.adapter.logging.logFormat | default "TEXT" }}" # Values can be "JSON", "TEXT"
+    {{- else }}
+    logLevel = "DEBG" # LogLevels can be "DEBG", "FATL", "ERRO", "WARN", "INFO", "PANC"
+    LogFormat = "TEXT" # Values can be "JSON", "TEXT"
+    {{- end }}
+
+    [rotation]
+    MaxSize = 10    # In MegaBytes (MB)
+    MaxBackups = 3
+    MaxAge =  2   # In days
+    Compress = true
+
+    ## Adapter package Level configurations
+
+    [[pkg]]
+    name = "github.com/wso2/apk/adapter/internal/adapter"
+    logLevel = "INFO" # LogLevels can be "DEBG", "FATL", "ERRO", "WARN", "INFO", "PANC"
+
+    [[pkg]]
+    name = "github.com/wso2/apk/adapter/internal/oasparser"
+    logLevel = "INFO"
 {{- end -}}

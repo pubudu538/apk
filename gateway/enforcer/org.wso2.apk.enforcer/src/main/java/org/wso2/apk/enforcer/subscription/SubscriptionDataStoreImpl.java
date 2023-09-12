@@ -30,6 +30,7 @@ import org.wso2.apk.enforcer.discovery.ApplicationDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.ApplicationKeyMappingDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.ApplicationPolicyDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.JWTIssuerDiscoveryClient;
+import org.wso2.apk.enforcer.discovery.OrganizationDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.SubscriptionDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.SubscriptionPolicyDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.subscription.APIs;
@@ -133,6 +134,7 @@ public class SubscriptionDataStoreImpl implements SubscriptionDataStore {
         SubscriptionPolicyDiscoveryClient.getInstance().watchSubscriptionPolicies();
         ApplicationKeyMappingDiscoveryClient.getInstance().watchApplicationKeyMappings();
         JWTIssuerDiscoveryClient.getInstance().watchJWTIssuers();
+        OrganizationDiscoveryClient.getInstance().watchOrganizations();
     }
 
     public void addSubscriptions(List<org.wso2.apk.enforcer.discovery.subscription.Subscription> subscriptionList) {

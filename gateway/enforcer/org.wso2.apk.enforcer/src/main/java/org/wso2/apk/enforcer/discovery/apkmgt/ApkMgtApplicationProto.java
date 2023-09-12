@@ -4325,11 +4325,11 @@ public final class ApkMgtApplicationProto {
       "yManager\030\002 \001(\t\"\204\001\n\014Subscription\022\014\n\004uuid\030" +
       "\001 \001(\t\022\017\n\007apiUuid\030\002 \001(\t\022\020\n\010policyId\030\003 \001(\t" +
       "\022\032\n\022subscriptionStatus\030\004 \001(\t\022\024\n\014organiza" +
-      "tion\030\005 \001(\t\022\021\n\tcreatedBy\030\006 \001(\tB\235\001\n&org.ws" +
+      "tion\030\005 \001(\t\022\021\n\tcreatedBy\030\006 \001(\tB\207\001\n&org.ws" +
       "o2.apk.enforcer.discovery.apkmgtB\026ApkMgt" +
-      "ApplicationProtoP\000ZYgithub.com/envoyprox" +
+      "ApplicationProtoP\000ZCgithub.com/envoyprox" +
       "y/go-control-plane/wso2/discovery/apkmgt" +
-      "application;apkmgtapplicationb\006proto3"
+      ";apkmgtb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

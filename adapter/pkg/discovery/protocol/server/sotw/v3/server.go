@@ -61,6 +61,7 @@ type watches struct {
 	revokedTokens             chan cache.Response
 	throttleData              chan cache.Response
 	APKMgtApplications        chan cache.Response
+	organizationList          chan cache.Response
 
 	configCancel                    func()
 	apiCancel                       func()
@@ -75,6 +76,7 @@ type watches struct {
 	revokedTokenCancel              func()
 	throttleDataCancel              func()
 	APKMgtApplicationCancel         func()
+	organizationListCancel          func()
 
 	configNonce                    string
 	apiNonce                       string
@@ -89,6 +91,7 @@ type watches struct {
 	revokedTokenNonce              string
 	throttleDataNonce              string
 	APKMgtApplicationNonce         string
+	organizationListNonce          string
 
 	// Opaque resources share a muxed channel. Nonces and watch cancellations are indexed by type URL.
 	responses     chan cache.Response
@@ -156,6 +159,9 @@ func (values *watches) Cancel() {
 	}
 	if values.APKMgtApplicationCancel != nil {
 		values.APKMgtApplicationCancel()
+	}
+	if values.organizationListCancel != nil {
+		values.organizationListCancel()
 	}
 
 	for _, cancel := range values.cancellations {
@@ -370,6 +376,15 @@ func (s *server) process(stream streamv3.Stream, reqCh <-chan *discovery.Discove
 				}
 				values.nonces[typeURL] = nonce
 			}
+		case resp, more := <-values.organizationList:
+			if !more {
+				return status.Errorf(codes.Unavailable, "organizationList watch failed")
+			}
+			nonce, err := send(resp)
+			if err != nil {
+				return err
+			}
+			values.organizationListNonce = nonce
 
 		case req, more := <-reqCh:
 			// input stream ended or errored out
@@ -518,6 +533,14 @@ func (s *server) process(stream streamv3.Stream, reqCh <-chan *discovery.Discove
 					}
 					values.APKMgtApplications = make(chan cache.Response, 1)
 					values.APKMgtApplicationCancel = s.cache.CreateWatch(req, streamState, values.APKMgtApplications)
+				}
+			case req.TypeUrl == resource.OrganizationListType:
+				if values.organizationListNonce == "" || values.organizationListNonce == nonce {
+					if values.organizationListCancel != nil {
+						values.organizationListCancel()
+					}
+					values.organizationList = make(chan cache.Response, 1)
+					values.organizationListCancel = s.cache.CreateWatch(req, streamState, values.organizationList)
 				}
 			default:
 				typeURL := req.TypeUrl

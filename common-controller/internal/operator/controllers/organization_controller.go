@@ -19,7 +19,9 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
+	xds "github.com/wso2/apk/common-controller/internal/xds"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -30,6 +32,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
+	"github.com/wso2/apk/adapter/pkg/discovery/api/wso2/discovery/apkmgt"
 	"github.com/wso2/apk/adapter/pkg/logging"
 	"github.com/wso2/apk/common-controller/internal/config"
 	loggers "github.com/wso2/apk/common-controller/internal/loggers"
@@ -64,7 +67,30 @@ func (r *OrganizationReconciler) Reconcile(ctx context.Context, req ctrl.Request
 
 	loggers.LoggerAPKOperator.Infof("Reconciling organization: %s", ratelimitKey.Name)
 
+	orgKey := req.NamespacedName
+	var orgList = new(cpv1alpha1.OrganizationList)
+	if err := r.client.List(ctx, orgList); err != nil {
+		return ctrl.Result{}, fmt.Errorf("failed to get organizations %s/%s",
+			orgKey.Namespace, orgKey.Name)
+	}
+
+	marshalledOrgList := marshalOrganizationList(orgList.Items)
+	xds.UpdateEnforcerOrganizations(marshalledOrgList)
 	return ctrl.Result{}, nil
+}
+
+func marshalOrganizationList(organizationList []cpv1alpha1.Organization) *apkmgt.OrganizationList {
+	organizations := []*apkmgt.Organization{}
+	for _, orgInternal := range organizationList {
+		org := &apkmgt.Organization{
+			Name: orgInternal.Spec.Name,
+			Id:   orgInternal.Spec.ID,
+		}
+		organizations = append(organizations, org)
+	}
+	return &apkmgt.OrganizationList{
+		List: organizations,
+	}
 }
 
 // NewOrganizationController creates a new organizationController instance.

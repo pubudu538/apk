@@ -29,6 +29,8 @@ import org.wso2.apk.enforcer.discovery.JWTIssuerDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.RevokedTokenDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.SubscriptionDiscoveryClient;
 import org.wso2.apk.enforcer.discovery.SubscriptionPolicyDiscoveryClient;
+import org.wso2.apk.enforcer.discovery.OrganizationDiscoveryClient;
+
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -55,6 +57,7 @@ public class XdsSchedulerManager {
     private ScheduledFuture<?> configDiscoveryScheduledFuture;
     private ScheduledFuture<?> applicationPolicyDiscoveryScheduledFuture;
     private ScheduledFuture<?> subscriptionPolicyDiscoveryScheduledFuture;
+    private ScheduledFuture<?> organizationDiscoveryScheduledFuture;
 
     public static XdsSchedulerManager getInstance() {
         if (instance == null) {
@@ -206,6 +209,20 @@ public class XdsSchedulerManager {
         if (subscriptionPolicyDiscoveryScheduledFuture != null && !subscriptionPolicyDiscoveryScheduledFuture
                 .isDone()) {
             subscriptionPolicyDiscoveryScheduledFuture.cancel(false);
+        }
+    }
+
+    public synchronized void startOrganizationDiscoveryScheduling() {
+        if (organizationDiscoveryScheduledFuture == null || organizationDiscoveryScheduledFuture.isDone()) {
+            organizationDiscoveryScheduledFuture = discoveryClientScheduler
+                    .scheduleWithFixedDelay(OrganizationDiscoveryClient.getInstance(), 1, retryPeriod,
+                            TimeUnit.SECONDS);
+        }
+    }
+
+    public synchronized void stoptOrganizationDiscoveryScheduling() {
+        if (organizationDiscoveryScheduledFuture != null && !organizationDiscoveryScheduledFuture.isDone()) {
+            organizationDiscoveryScheduledFuture.cancel(false);
         }
     }
 }

@@ -33,6 +33,7 @@ const (
 	SubscriptionType              = apiTypePrefix + "wso2.discovery.subscription.Subscription"
 	JWTIssuerType                 = apiTypePrefix + "wso2.discovery.subscription.JWTIssuer"
 	JWTIssuerListType             = apiTypePrefix + "wso2.discovery.subscription.JWTIssuerList"
+	OrganizationListType          = apiTypePrefix + "wso2.discovery.apkmgt.OrganizationList"
 	// AnyType is used only by ADS
 	AnyType = ""
 )

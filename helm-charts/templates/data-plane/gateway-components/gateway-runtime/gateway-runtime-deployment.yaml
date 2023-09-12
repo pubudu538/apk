@@ -78,6 +78,12 @@ spec:
               value: "/home/wso2/security/truststore"
             - name: ADAPTER_XDS_PORT
               value : "18000"
+            - name: COMMON_CONTROLLER_HOSTNAME
+              value: {{ template "apk-helm.resource.prefix" . }}-common-controller-service.{{ .Release.Namespace }}.svc
+            - name: COMMON_CONTROLLER_HOST
+              value: {{ template "apk-helm.resource.prefix" . }}-common-controller-service.{{ .Release.Namespace }}.svc
+            - name: COMMON_CONTROLLER_XDS_PORT
+              value : "18006"
             - name: ENFORCER_LABEL
               value : default
             - name: ENFORCER_REGION

@@ -35,5 +35,6 @@ const (
 	Application
 	Subscription
 	JWTIssuer
+	OrganizationList
 	UnknownType // token to count the total number of supported types
 )

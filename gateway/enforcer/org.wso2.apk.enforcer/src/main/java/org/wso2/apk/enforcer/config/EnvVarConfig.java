@@ -34,6 +34,9 @@ public class EnvVarConfig {
     private static final String OPA_CLIENT_PUBLIC_CERT_PATH = "OPA_CLIENT_PUBLIC_CERT_PATH";
     private static final String ADAPTER_HOST = "ADAPTER_HOST";
     private static final String ADAPTER_XDS_PORT = "ADAPTER_XDS_PORT";
+    private static final String COMMON_CONTROLLER_HOST = "COMMON_CONTROLLER_HOST";
+    private static final String COMMON_CONTROLLER_XDS_PORT = "COMMON_CONTROLLER_XDS_PORT";
+    private static final String COMMON_CONTROLLER_HOSTNAME = "COMMON_CONTROLLER_HOSTNAME";
     private static final String ENFORCER_LABEL = "ENFORCER_LABEL";
     private static final String ENFORCER_REGION_ID = "ENFORCER_REGION";
     public static final String XDS_MAX_MSG_SIZE = "XDS_MAX_MSG_SIZE";
@@ -52,6 +55,9 @@ public class EnvVarConfig {
     private static final String DEFAULT_ADAPTER_XDS_PORT = "18000";
     private static final String DEFAULT_ENFORCER_LABEL = "enforcer";
     public static final String DEFAULT_XDS_MAX_MSG_SIZE = "4194304";
+    private static final String DEFAULT_COMMON_CONTROLLER_HOST = "common-controller";
+    private static final String DEFAULT_COMMON_CONTROLLER_XDS_PORT = "18006";
+    private static final String DEFAULT_COMMON_CONTROLLER_HOSTNAME = "common-controller";
     public static final String DEFAULT_XDS_MAX_RETRIES = Integer.toString(Constants.MAX_XDS_RETRIES);
     public static final String DEFAULT_XDS_RETRY_PERIOD = Integer.toString(Constants.XDS_DEFAULT_RETRY);
     public static final String DEFAULT_HOSTNAME = "Unassigned";
@@ -67,6 +73,9 @@ public class EnvVarConfig {
     private final String enforcerLabel;
     private final String adapterXdsPort;
     private final String adapterHostName;
+    private final String commonControllerHost;
+    private final String commonControllerXdsPort;
+    private final String commonControllerHostname;
     // TODO: (VirajSalaka) Enforcer ID should be picked from router once envoy 1.18.0 is released and microgateway
     // is updated.
     private final String enforcerRegionId;
@@ -96,6 +105,9 @@ public class EnvVarConfig {
         enforcerRegionId = retrieveEnvVarOrDefault(ENFORCER_REGION_ID, DEFAULT_ENFORCER_REGION_ID);
         xdsMaxRetries = retrieveEnvVarOrDefault(XDS_MAX_RETRIES, DEFAULT_XDS_MAX_RETRIES);
         xdsRetryPeriod = retrieveEnvVarOrDefault(XDS_RETRY_PERIOD, DEFAULT_XDS_RETRY_PERIOD);
+        commonControllerHost = retrieveEnvVarOrDefault(COMMON_CONTROLLER_HOST, DEFAULT_COMMON_CONTROLLER_HOST);
+        commonControllerXdsPort = retrieveEnvVarOrDefault(COMMON_CONTROLLER_XDS_PORT, DEFAULT_COMMON_CONTROLLER_XDS_PORT);
+        commonControllerHostname = retrieveEnvVarOrDefault(COMMON_CONTROLLER_HOSTNAME, DEFAULT_COMMON_CONTROLLER_HOSTNAME);
         // HOSTNAME environment property is readily available in docker and kubernetes, and it represents the Pod
         // name in Kubernetes context, containerID in docker context.
         instanceIdentifier = retrieveEnvVarOrDefault(HOSTNAME, DEFAULT_HOSTNAME);
@@ -179,5 +191,17 @@ public class EnvVarConfig {
 
     public String getInstanceIdentifier() {
         return instanceIdentifier;
+    }
+
+    public String getCommonControllerHost() {
+        return commonControllerHost;
+    }
+
+    public String getCommonControllerXdsPort() {
+        return commonControllerXdsPort;
+    }
+
+    public String getCommonControllerHostname() {
+        return commonControllerHostname;
     }
 }

@@ -1,4 +1,4 @@
-//  Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+//  Copyright (c) 2023, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 //  WSO2 LLC. licenses this file to you under the Apache License,
 //  Version 2.0 (the "License"); you may not use this file except
@@ -18,34 +18,16 @@ syntax = "proto3";
 
 package wso2.discovery.apkmgt;
 
+import "wso2/discovery/apkmgt/organization.proto";
+
 option go_package = "github.com/envoyproxy/go-control-plane/wso2/discovery/apkmgt;apkmgt";
 option java_package = "org.wso2.apk.enforcer.discovery.apkmgt";
-option java_outer_classname = "ApkMgtApplicationProto";
-option java_multiple_files = false;
+option java_outer_classname = "OrganizationListProto";
+option java_multiple_files = true;
 
-// [#protodoc-title: ApplicationDetails]
+// [#protodoc-title: OrganizationList]
 
-message Application {
-  string uuid = 1;
-  string name = 2;
-  string owner = 3;
-  map<string, string> attributes = 4;
-  string subscriber = 5;
-  string organization = 6;
-  repeated Subscription subscriptions = 7;
-  repeated ConsumerKey consumerKeys = 8;
-}
-
-message ConsumerKey {
-  string key = 1;
-  string keyManager = 2;
-}
-
-message Subscription {
-  string uuid = 1;
-  string apiUuid = 2;
-  string policyId = 3;
-  string subscriptionStatus = 4;
-  string organization = 5;
-  string createdBy = 6;
+// OrganizationList data model
+message OrganizationList {
+	repeated Organization list = 2;
 }
