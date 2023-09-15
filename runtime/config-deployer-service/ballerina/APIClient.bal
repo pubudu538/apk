@@ -338,7 +338,8 @@ public class APIClient {
                 context: self.returnFullContext(apkConf.context, apkConf.'version),
                 isDefaultVersion: apkConf.defaultVersion,
                 organization: organization.name,
-                definitionPath: apkConf.definitionPath
+                definitionPath: apkConf.definitionPath,
+                environment: apkConf.environment
             }
         };
         model:ConfigMap? definition = apiArtifact?.definition;
