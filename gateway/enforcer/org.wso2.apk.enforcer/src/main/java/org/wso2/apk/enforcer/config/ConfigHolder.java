@@ -388,6 +388,7 @@ public class ConfigHolder {
         analyticsDTO.setType(analyticsConfig.getType());
         analyticsDTO.setConfigProperties(analyticsConfig.getConfigPropertiesMap());
         analyticsDTO.setServerConfig(serverConfig);
+        analyticsDTO.setGatewayType(analyticsConfig.getGatewayType());
         config.setAnalyticsConfig(analyticsDTO);
 
     }

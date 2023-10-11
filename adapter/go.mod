@@ -10,7 +10,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.9.5
 	github.com/onsi/gomega v1.27.7
 	github.com/pelletier/go-toml v1.8.1
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/exp v0.0.0-20230801115018-d63ba01acd4b
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230731190214-cbb8c96f2d6d
 	google.golang.org/grpc v1.57.0

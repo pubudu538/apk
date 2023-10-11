@@ -33,4 +33,6 @@ message Analytics {
   Service service = 3;
   // Analytics type
   string type = 4;
+  // Gateway Type
+  string gatewayType = 5;
 }

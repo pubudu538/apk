@@ -113,4 +113,24 @@ public interface AnalyticsOrBuilder extends
    */
   com.google.protobuf.ByteString
       getTypeBytes();
+
+  /**
+   * <pre>
+   * Gateway Type
+   * </pre>
+   *
+   * <code>string gatewayType = 5;</code>
+   * @return The gatewayType.
+   */
+  java.lang.String getGatewayType();
+  /**
+   * <pre>
+   * Gateway Type
+   * </pre>
+   *
+   * <code>string gatewayType = 5;</code>
+   * @return The bytes for gatewayType.
+   */
+  com.google.protobuf.ByteString
+      getGatewayTypeBytes();
 }

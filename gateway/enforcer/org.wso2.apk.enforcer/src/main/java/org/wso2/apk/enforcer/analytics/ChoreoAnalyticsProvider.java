@@ -36,6 +36,7 @@ import org.wso2.apk.enforcer.commons.analytics.publishers.dto.Target;
 import org.wso2.apk.enforcer.commons.analytics.publishers.dto.enums.EventCategory;
 import org.wso2.apk.enforcer.commons.analytics.publishers.dto.enums.FaultCategory;
 import org.wso2.apk.enforcer.commons.analytics.publishers.dto.enums.FaultSubCategory;
+import org.wso2.apk.enforcer.config.ConfigHolder;
 import org.wso2.apk.enforcer.constants.AnalyticsConstants;
 import org.wso2.apk.enforcer.constants.MetadataConstants;
 
@@ -176,10 +177,11 @@ public class ChoreoAnalyticsProvider implements AnalyticsDataProvider {
 
     @Override
     public MetaInfo getMetaInfo() {
+        String gatewayType = ConfigHolder.getInstance().getConfig().getAnalyticsConfig().getGatewayType();
         Map<String, Value> fieldsMap = getFieldsMapFromLogEntry();
         MetaInfo metaInfo = new MetaInfo();
         metaInfo.setCorrelationId(getValueAsString(fieldsMap, MetadataConstants.CORRELATION_ID_KEY));
-        metaInfo.setGatewayType(AnalyticsConstants.GATEWAY_LABEL);
+        metaInfo.setGatewayType(gatewayType);
         metaInfo.setRegionId(getValueAsString(fieldsMap, MetadataConstants.REGION_KEY));
         return metaInfo;
     }
@@ -232,12 +234,17 @@ public class ChoreoAnalyticsProvider implements AnalyticsDataProvider {
     @Override
     public Map<String, Object> getProperties() {
         AnalyticsCustomDataProvider customDataProvider = AnalyticsFilter.getAnalyticsCustomDataProvider();
+        Map<String, Object> propertiesMap = new HashMap<>();
         if (customDataProvider != null && customDataProvider.getCustomProperties(customProperties) != null) {
-            return customDataProvider.getCustomProperties(customProperties);
+            propertiesMap = customDataProvider.getCustomProperties(customProperties);
+        } else {
+            propertiesMap = customProperties;
         }
-        return this.customProperties;
-    }
 
+        Map<String, Value> fieldsMap = getFieldsMapFromLogEntry();
+        propertiesMap.put(AnalyticsConstants.ENVIRONMENT_ID,getValueAsString(fieldsMap, MetadataConstants.API_ENVIRONMENT));
+        return propertiesMap;
+    }
 
     private String getValueAsString(Map<String, Value> fieldsMap, String key) {
         if (fieldsMap == null || !fieldsMap.containsKey(key)) {
