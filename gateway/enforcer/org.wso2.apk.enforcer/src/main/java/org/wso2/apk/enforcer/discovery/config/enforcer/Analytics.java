@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private Analytics() {
     type_ = "";
+    gatewayType_ = "";
   }
 
   @java.lang.Override
@@ -85,6 +86,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             type_ = s;
+            break;
+          }
+          case 42: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            gatewayType_ = s;
             break;
           }
           default: {
@@ -323,6 +330,52 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int GATEWAYTYPE_FIELD_NUMBER = 5;
+  private volatile java.lang.Object gatewayType_;
+  /**
+   * <pre>
+   * Gateway Type
+   * </pre>
+   *
+   * <code>string gatewayType = 5;</code>
+   * @return The gatewayType.
+   */
+  @java.lang.Override
+  public java.lang.String getGatewayType() {
+    java.lang.Object ref = gatewayType_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      gatewayType_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * Gateway Type
+   * </pre>
+   *
+   * <code>string gatewayType = 5;</code>
+   * @return The bytes for gatewayType.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getGatewayTypeBytes() {
+    java.lang.Object ref = gatewayType_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      gatewayType_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -351,6 +404,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!getTypeBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, type_);
+    }
+    if (!getGatewayTypeBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, gatewayType_);
     }
     unknownFields.writeTo(output);
   }
@@ -382,6 +438,9 @@ private static final long serialVersionUID = 0L;
     if (!getTypeBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, type_);
     }
+    if (!getGatewayTypeBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, gatewayType_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -408,6 +467,8 @@ private static final long serialVersionUID = 0L;
     }
     if (!getType()
         .equals(other.getType())) return false;
+    if (!getGatewayType()
+        .equals(other.getGatewayType())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -432,6 +493,8 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + TYPE_FIELD_NUMBER;
     hash = (53 * hash) + getType().hashCode();
+    hash = (37 * hash) + GATEWAYTYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getGatewayType().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -598,6 +661,8 @@ private static final long serialVersionUID = 0L;
       }
       type_ = "";
 
+      gatewayType_ = "";
+
       return this;
     }
 
@@ -634,6 +699,7 @@ private static final long serialVersionUID = 0L;
         result.service_ = serviceBuilder_.build();
       }
       result.type_ = type_;
+      result.gatewayType_ = gatewayType_;
       onBuilt();
       return result;
     }
@@ -692,6 +758,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getType().isEmpty()) {
         type_ = other.type_;
+        onChanged();
+      }
+      if (!other.getGatewayType().isEmpty()) {
+        gatewayType_ = other.gatewayType_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -1158,6 +1228,102 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       type_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object gatewayType_ = "";
+    /**
+     * <pre>
+     * Gateway Type
+     * </pre>
+     *
+     * <code>string gatewayType = 5;</code>
+     * @return The gatewayType.
+     */
+    public java.lang.String getGatewayType() {
+      java.lang.Object ref = gatewayType_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gatewayType_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Gateway Type
+     * </pre>
+     *
+     * <code>string gatewayType = 5;</code>
+     * @return The bytes for gatewayType.
+     */
+    public com.google.protobuf.ByteString
+        getGatewayTypeBytes() {
+      java.lang.Object ref = gatewayType_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gatewayType_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Gateway Type
+     * </pre>
+     *
+     * <code>string gatewayType = 5;</code>
+     * @param value The gatewayType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setGatewayType(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      gatewayType_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Gateway Type
+     * </pre>
+     *
+     * <code>string gatewayType = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearGatewayType() {
+      
+      gatewayType_ = getDefaultInstance().getGatewayType();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Gateway Type
+     * </pre>
+     *
+     * <code>string gatewayType = 5;</code>
+     * @param value The bytes for gatewayType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setGatewayTypeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      gatewayType_ = value;
       onChanged();
       return this;
     }

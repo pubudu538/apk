@@ -28,7 +28,7 @@ public class AnalyticsConstants {
     public static final String EXT_AUTH_DENIED_RESPONSE_DETAIL = "ext_authz_denied";
     public static final String EXT_AUTH_ERROR_RESPONSE_DETAIL = "ext_authz_error";
     public static final String ROUTE_NOT_FOUND_RESPONSE_DETAIL = "route_not_found";
-    public static final String GATEWAY_LABEL = "ENVOY";
+    public static final String ENVIRONMENT_ID = "environmentId";
 
     public static final String TOKEN_ENDPOINT_PATH = "/testkey";
     public static final String HEALTH_ENDPOINT_PATH = "/health";

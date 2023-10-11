@@ -29,6 +29,7 @@ public class AnalyticsDTO {
     private String type;
     private Map<String, String> configProperties;
     private AnalyticsReceiverConfigDTO serverConfig;
+    private String gatewayType;
 
     public boolean isEnabled() {
         return isEnabled;
@@ -60,5 +61,13 @@ public class AnalyticsDTO {
 
     public void setConfigProperties(Map<String, String> configProperties) {
         this.configProperties = configProperties;
+    }
+
+    public String getGatewayType() {
+        return gatewayType;
+    }
+
+    public void setGatewayType(String gatewayType) {
+        this.gatewayType = gatewayType;
     }
 }

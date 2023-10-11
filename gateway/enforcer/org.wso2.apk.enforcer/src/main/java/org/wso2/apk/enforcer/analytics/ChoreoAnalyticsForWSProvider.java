@@ -33,6 +33,7 @@ import org.wso2.apk.enforcer.commons.analytics.publishers.dto.Target;
 import org.wso2.apk.enforcer.commons.analytics.publishers.dto.enums.EventCategory;
 import org.wso2.apk.enforcer.commons.analytics.publishers.dto.enums.FaultCategory;
 import org.wso2.apk.enforcer.commons.analytics.publishers.dto.enums.FaultSubCategory;
+import org.wso2.apk.enforcer.config.ConfigHolder;
 import org.wso2.apk.enforcer.discovery.service.websocket.WebSocketFrameRequest;
 import org.wso2.apk.enforcer.constants.APIConstants;
 import org.wso2.apk.enforcer.constants.AnalyticsConstants;
@@ -161,10 +162,11 @@ public class ChoreoAnalyticsForWSProvider implements AnalyticsDataProvider {
 
     @Override
     public MetaInfo getMetaInfo() {
+        String gatewayType = ConfigHolder.getInstance().getConfig().getAnalyticsConfig().getGatewayType();
         MetaInfo metaInfo = new MetaInfo();
         // Correlation ID is as same as X-Request-ID
         metaInfo.setCorrelationId(extAuthMetadata.get(MetadataConstants.CORRELATION_ID_KEY));
-        metaInfo.setGatewayType("ENVOY");
+        metaInfo.setGatewayType(gatewayType);
         metaInfo.setRegionId(extAuthMetadata.get(MetadataConstants.REGION_KEY));
         return metaInfo;
     }

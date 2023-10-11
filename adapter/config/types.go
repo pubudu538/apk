@@ -307,10 +307,11 @@ type cache struct {
 }
 
 type analytics struct {
-	Enabled  bool
-	Type     string
-	Adapter  analyticsAdapter
-	Enforcer analyticsEnforcer
+	Enabled     bool
+	Type        string
+	GatewayType string
+	Adapter     analyticsAdapter
+	Enforcer    analyticsEnforcer
 }
 
 type tracing struct {

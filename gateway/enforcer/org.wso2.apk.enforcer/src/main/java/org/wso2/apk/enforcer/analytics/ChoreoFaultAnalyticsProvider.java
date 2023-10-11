@@ -129,6 +129,7 @@ public class ChoreoFaultAnalyticsProvider implements AnalyticsDataProvider {
         api.setApiCreatorTenantDomain(
                 tenantDomain == null ? APIConstants.SUPER_TENANT_DOMAIN_NAME : tenantDomain);
         api.setOrganizationId(requestContext.getMatchedAPI().getOrganizationId());
+        api.setEnvironmentId(requestContext.getMatchedAPI().getEnvironment());
         return api;
     }
 
@@ -184,9 +185,10 @@ public class ChoreoFaultAnalyticsProvider implements AnalyticsDataProvider {
 
     @Override
     public MetaInfo getMetaInfo() {
+        String gatewayType = ConfigHolder.getInstance().getConfig().getAnalyticsConfig().getGatewayType();
         MetaInfo metaInfo = new MetaInfo();
         metaInfo.setRegionId(ConfigHolder.getInstance().getEnvVarConfig().getEnforcerRegionId());
-        metaInfo.setGatewayType(AnalyticsConstants.GATEWAY_LABEL);
+        metaInfo.setGatewayType(gatewayType);
         metaInfo.setCorrelationId(requestContext.getRequestID());
         return metaInfo;
     }
@@ -244,9 +246,14 @@ public class ChoreoFaultAnalyticsProvider implements AnalyticsDataProvider {
     @Override
     public Map<String, Object> getProperties() {
         AnalyticsCustomDataProvider customDataProvider = AnalyticsFilter.getAnalyticsCustomDataProvider();
+        Map<String, Object> propertiesMap = new HashMap<>();
         if (customDataProvider != null && customDataProvider.getCustomProperties(customProperties) != null) {
-            return customDataProvider.getCustomProperties(customProperties);
+            propertiesMap = customDataProvider.getCustomProperties(customProperties);
+        } else {
+            propertiesMap = customProperties;
         }
-        return this.customProperties;
+
+        propertiesMap.put(AnalyticsConstants.ENVIRONMENT_ID, requestContext.getMatchedAPI().getEnvironment());
+        return propertiesMap;
     }
 }
