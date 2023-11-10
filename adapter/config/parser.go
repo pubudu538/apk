@@ -40,7 +40,7 @@ var (
 const (
 	// RelativeConfigPath is the relative file path where the configuration file is.
 	relativeConfigPath   = "/conf/config.toml"
-	gatewayTypeDefault   = "Onprem-APK"
+	gatewayTypeDefault   = "Onprem"
 	gatewayTypeChoreo    = "Choreo"
 	gatewayTypeChoreoPDP = "Choreo-PDP"
 )

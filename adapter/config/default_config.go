@@ -217,7 +217,7 @@ var defaultConfig = &Config{
 	Analytics: analytics{
 		Enabled:     false,
 		Type:        "Default",
-		GatewayType: "Onprem-APK",
+		GatewayType: "Onprem",
 		Adapter: analyticsAdapter{
 			BufferFlushInterval: 1000000000,
 			BufferSizeBytes:     16384,

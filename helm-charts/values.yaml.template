@@ -674,8 +674,8 @@ wso2:
           enabled: true
           # -- Type of analytics data publisher. Can be "Choreo" or "ELK".
           type: "Choreo"
-          # -- Type of gateway. Default value is "Onprem-APK". Can be "Choreo" and "Choreo-PDP".
-          gatewayType: "Onprem-APK"
+          # -- Type of gateway. Default value is "Onprem". Can be "Choreo" and "Choreo-PDP".
+          gatewayType: "Onprem"
           # -- Choreo analytics secret.
           secretName: "choreo-analytics-secret"
           # -- Optional: File name of the log file.
